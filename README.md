@@ -1,2 +1,2 @@
-# django-travel-companion
+# Django Travel Companion
 Manage your travel itineraries.
