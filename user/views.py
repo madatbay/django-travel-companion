@@ -5,7 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
-from .forms import CustomUserCreationForm
+from .forms import CustomUserChangeForm, CustomUserCreationForm
 
 
 def register_user(request):
@@ -44,3 +44,20 @@ def logout_user(request):
     logout(request)
     messages.info(request, "You have successfully logged out.")
     return redirect("travel:home")
+
+
+@login_required
+def profile(request):
+    return render(request, "user/profile.html")
+
+
+@login_required
+def edit_profile(request):
+    if request.method == "POST":
+        form = CustomUserChangeForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.info(request, "Profile successfully updated.")
+            return redirect("user:profile")
+    form = CustomUserChangeForm(instance=request.user)
+    return render(request, "user/edit_profile.html", {"form": form})
