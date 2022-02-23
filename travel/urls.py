@@ -1,3 +1,6 @@
-app_name = 'travel'
+from django.urls import path
+from . import views
 
-urlpatterns = []
+app_name = "travel"
+
+urlpatterns = [path("", views.home, name="home")]

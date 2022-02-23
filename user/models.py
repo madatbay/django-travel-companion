@@ -32,15 +32,15 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     username = None
-    full_name = models.CharField("Full name", max_length=80, help_text="max length: 80")
-    email = models.EmailField("Email", unique=True, max_length=120, help_text="max length: 120")
-    password = models.CharField("Password", max_length=120, help_text="max length: 80")
+    full_name = models.CharField("Full name", max_length=80, help_text="Max length: 80 sumbols")
+    email = models.EmailField("Email", unique=True, max_length=120, help_text="Max length: 120 symbols")
+    password = models.CharField("Password", max_length=120, help_text="Max length: 80 symbols")
     avatar = models.ImageField(
         upload_to="users/",
         max_length=255,
         null=True,
         blank=True,
-        help_text="size: 1080x1080",
+        help_text="Recommended size: 1080x1080px",
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
