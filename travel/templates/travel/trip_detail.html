@@ -1,6 +1,6 @@
 {% extends 'travel/base.html' %} {% block content %}
 <h1 class="text-center">{{trip.name}}</h1>
-<div class="col-md-6 col-12 mx-auto">
+<div class="col-md-6 col-12">
   <div class="card border-primary h-100">
     <div class="card-body">
       <span class="badge rounded-pill {% if trip.is_completed %}bg-success{% else %}bg-secondary{% endif %} float-end"
@@ -18,7 +18,7 @@
     </div>
   </div>
 </div>
-<div class="col-md-6 col-12 mx-auto">
+<div class="col-md-6 col-12">
   <div class="card border-success h-100">
     <div class="card-body">
       <h5 class="card-title">Trip Mates</h5>
@@ -29,6 +29,42 @@
     </div>
     <div class="card-footer">
       <a href="{% url 'travel:add_trip_mates' trip.id %}" class="float-end">Edit Mates</a>
+    </div>
+  </div>
+</div>
+<div class="col-md-6 col-12 mt-4">
+  <div class="card border-success h-100">
+    <div class="card-body">
+      <h5 class="card-title">Trip Budget - {{trip.budget.name}}</h5>
+
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Label</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Item Price</th>
+            <th scope="col">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for budget in trip.budget.budgetitem_set.all %}
+
+          <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{budget.label}}</td>
+            <td>x{{budget.quantity}}</td>
+            <td>${{budget.item_price}}</td>
+            <td>${{budget.get_subtotal}}</td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer">
+      <b>Total: ${{trip.budget.get_total}}</b>
+      <a href="{% url 'travel:add_trip_mates' trip.id %}" class="float-end">Edit Budget</a>
     </div>
   </div>
 </div>

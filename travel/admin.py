@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Trip
+from .models import Trip, Budget, BudgetItem
 
 
 @admin.register(Trip)
@@ -29,3 +29,25 @@ class TripAdmin(admin.ModelAdmin):
             },
         ),
     )
+
+
+class BudgetItemInline(admin.TabularInline):
+    model = BudgetItem
+
+
+@admin.register(Budget)
+class BudgetAdmin(admin.ModelAdmin):
+    inlines = [BudgetItemInline]
+    list_display = ["name", "trip"]
+    search_fields = ["name", "trip", "created_at"]
+    list_filter = ["created_at"]
+    readonly_fields = ["created_at"]
+
+    fieldsets = (
+        ("General Information", {
+            "fields": (
+                "name", "trip", "created_at"
+            ),
+        }), 
+    )
+    

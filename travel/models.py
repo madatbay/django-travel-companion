@@ -26,3 +26,36 @@ class Trip(models.Model):
     @property
     def is_completed(self):
         return date.today() > self.end_date
+
+
+class Budget(models.Model):
+    trip = models.OneToOneField("travel.Trip", on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return self.name
+
+    @property
+    def get_total(self):
+        items = self.budgetitem_set.all()
+        total = 0
+        for item in items:
+            total += item.quantity * item.item_price
+        return total
+
+
+class BudgetItem(models.Model):
+    budget = models.ForeignKey("travel.Budget", on_delete=models.CASCADE)
+    label = models.CharField(max_length=50)
+    quantity = models.PositiveIntegerField(default=1)
+    item_price = models.PositiveIntegerField(default=0, help_text="Price for item per 1 quantity")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return self.label
+
+    @property
+    def get_subtotal(self):
+        return self.quantity * self.item_price
+
