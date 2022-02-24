@@ -2,9 +2,10 @@
 
 {% block content %}
 <div class="d-flex align-items-center justify-content-between">
-<h1>All my Trips</h1>
-<a href="#" class="btn btn-outline-info">Add Trip</a>
+<h1>All Trips</h1>
+<a href="{% url 'travel:create_trip' %}" class="btn btn-outline-info">Add Trip</a>
 </div>
+{% if not trips %}<p class="text-muted text-center">You don't have any created event. Create one and start planning</p>{% endif %}
 <div class="row row-cols-1 row-cols-md-3 g-4 mt-0">
     {% for trip in trips %}
     <div class="col">

@@ -1,0 +1,66 @@
+{% extends 'travel/base.html' %} {% load widget_tweaks %} {% block content %}
+<div class="col-md-6 col-12 mx-auto">
+  <h1 class="text-center">Add Trip Mates 🚶‍♂️</h1>
+  <hr />
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Search trip mate by email"
+    aria-label="Trip mate email"
+    aria-describedby="button-add"
+    oninput="search(this)"
+  />
+  <div class="list-group mb-2" id="search-list">
+    {% for user in users %}
+    <button type="button" class="list-group-item list-group-item-action d-none search-item" onclick="add_user(this.innerText)">
+      {{user.email}}
+    </button>
+    {% endfor %}
+  </div>
+  <div id="selected-users" class="mb-2"></div>
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" id="users" name="users" value="" />
+    <div class="d-grid">
+      <button class="btn btn-warning d-" type="submit">Add & Continue</button>
+    </div>
+  </form>
+  <a href="#" class="text-muted text-center d-block mt-2">Skip now</a>
+</div>
+<script>
+  const search = (input) => {
+    var xpath = `//button[contains(text(),'${input.value}')]`;
+    var matchingElement = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+    if (matchingElement && matchingElement.classList.contains("d-none")) {
+      matchingElement.classList.remove("d-none");
+    }
+    if (!matchingElement) {
+      items = document.getElementsByClassName("search-item");
+      for (const item of items) {
+        if (!item.classList.contains("d-none")) {
+          item.classList.add("d-none");
+        }
+      }
+    }
+  };
+  const add_user = (email) => {
+    if (
+      !document
+        .getElementById("selected-users")
+        .innerHTML.includes(
+          `<span class="badge bg-secondary selected-user" onclick="remove_user(this)" style="cursor: pointer;">${email}</span>`
+        )
+    ) {
+      document.getElementById(
+        "selected-users"
+      ).innerHTML += `<span class="badge bg-secondary selected-user" onclick="remove_user(this)" style="cursor: pointer;">${email}</span>`;
+      document.getElementById("users").value += email + ",";
+    }
+  };
+
+  const remove_user = (obj) => {
+    document.getElementById("users").value = document.getElementById("users").value.replace(obj.innerText + ",", "");
+    obj.remove();
+  };
+</script>
+{% endblock content %}
