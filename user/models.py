@@ -58,6 +58,12 @@ class User(AbstractBaseUser, PermissionsMixin):
             return mark_safe('<img src="{}" width="50" height="50" />'.format(self.avatar.url))
         return "Not set"
 
+    @property
+    def get_avatar(self):
+        if self.avatar:
+            return self.avatar.url
+        return "/static/user/img/default.png"
+
     def __str__(self):
         return "{}".format(self.email)
 

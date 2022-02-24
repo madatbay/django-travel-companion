@@ -1,12 +1,24 @@
-{% extends 'user/base.html' %}
+{% extends 'user/base.html' %} {% block content %}
+<title>Welcome, {{request.user.full_name}}</title>
 
-{% block content %}
-{{request.user.full_name}}
-{{request.user.email}}
-{% if request.user.avatar %}
-    <img src="{{request.user.avatar.url}}" width="100">
-{% endif %}
-
-<a href="{% url 'user:edit_profile' %}">Edit</a>
+<div class="col-lg-4 col-md-6 col-12 mx-auto">
+  <div class="card">
+    <div class="card-body d-flex flex-column align-items-center">
+      <div class="avatar-wrapper">
+        <img src="{{request.user.get_avatar}}" alt="avatar" class="avatar" />
+      </div>
+      <h4>{{request.user.full_name}}</h4>
+      <p>{{request.user.email}}</p>
+      <small class="mb-2 text-muted">Joined on: {{request.user.created_at|date}}</small>
+      <div class="d-grid w-100">
+        <a href="{% url 'user:edit_profile' %}" class="btn btn-warning">Update</a>
+        <a href="{% url 'user:logout' %}" class="btn btn-light mt-2">Log out</a>
+      </div>
+    </div>
+  </div>
+  {% if messages %} {% for message in messages %}
+  <div class="mt-2 alert {% if message.tags %}{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+  {% endfor %} {% endif %}
+</div>
 
 {% endblock content %}
