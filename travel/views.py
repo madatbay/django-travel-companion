@@ -40,3 +40,6 @@ def add_trip_mates(request, id):
         "users": User.objects.exclude(email=request.user.email)
     }
     return render(request, "travel/add_tripmates.html", context)
+
+def trip_detail(request, id):
+    return render(request, "travel/trip_detail.html", {"trip": Trip.objects.get(id=id)})

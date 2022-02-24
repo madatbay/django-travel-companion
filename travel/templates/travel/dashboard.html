@@ -14,7 +14,7 @@
             <span class="badge rounded-pill {% if trip.is_completed %}bg-success{% else %}bg-secondary{% endif %} float-end">{% if trip.is_completed %}Completed{% else %}{{trip.start_date}}{% endif %}</span>
             <h5 class="card-title">{{trip.name}}</h5>
             <p class="card-text">{{trip.description}}</p>
-            <a href="#" class="card-link">Manage</a>
+            <a href="{% url 'travel:trip_detail' trip.id %}" class="card-link">Manage</a>
           </div>
           <div class="card-footer">
             <small class="text-muted">Added at: {{trip.created_at}}</small>

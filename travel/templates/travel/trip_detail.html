@@ -1,0 +1,36 @@
+{% extends 'travel/base.html' %} {% block content %}
+<h1 class="text-center">{{trip.name}}</h1>
+<div class="col-md-6 col-12 mx-auto">
+  <div class="card border-primary h-100">
+    <div class="card-body">
+      <span class="badge rounded-pill {% if trip.is_completed %}bg-success{% else %}bg-secondary{% endif %} float-end"
+        >{% if trip.is_completed %}Completed{% else %}{{trip.start_date}}{% endif %}</span
+      >
+      <h5 class="card-title">{{trip.name}}</h5>
+      <p class="card-text">{{trip.description}}</p>
+      <i>Start date: {{trip.start_date}}</i>
+      <br>
+      <i>End date: {{trip.end_date}}</i>
+    </div>
+    <div class="card-footer">
+      <small class="text-muted">Added at: {{trip.created_at}}</small>
+      <a href="#" class="float-end">Edit Trip</a>
+    </div>
+  </div>
+</div>
+<div class="col-md-6 col-12 mx-auto">
+  <div class="card border-success h-100">
+    <div class="card-body">
+      <h5 class="card-title">Trip Mates</h5>
+      {% if not trip.trip_mates.all %}No trip mates found{% endif %}
+      {% for mate in trip.trip_mates.all %}
+      <span class="badge bg-secondary">{{mate.email}}</span>
+      {% endfor %}
+    </div>
+    <div class="card-footer">
+      <a href="" class="float-end">Edit Mates</a>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}</div>
