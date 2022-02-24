@@ -17,15 +17,19 @@
     </button>
     {% endfor %}
   </div>
-  <div id="selected-users" class="mb-2"></div>
+  <div id="selected-users" class="mb-2">
+    {% for mate in mates %}
+    <span class="badge bg-secondary selected-user" onclick="remove_user(this)" style="cursor: pointer;">{{mate}}</span>
+    {% endfor %}
+  </div>
   <form method="post">
     {% csrf_token %}
-    <input type="hidden" id="users" name="users" value="" />
+    <input type="hidden" id="users" name="users" value="{% for mate in mates %}{{mate}},{% endfor %}" />
     <div class="d-grid">
-      <button class="btn btn-warning d-" type="submit">Add & Continue</button>
+      <button class="btn btn-warning d-" type="submit">Save & Continue</button>
     </div>
   </form>
-  <a href="#" class="text-muted text-center d-block mt-2">Skip now</a>
+  <a href="#" class="text-muted text-center d-block mt-2">Budget Planner</a>
 </div>
 <script>
   const search = (input) => {
