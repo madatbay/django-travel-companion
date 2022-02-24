@@ -14,7 +14,7 @@ def register_user(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect("travel:home")
+            return redirect("travel:index")
     else:
         form = CustomUserCreationForm()
     return render(request, "user/register.html", {"form": form})
@@ -30,7 +30,7 @@ def login_user(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, f"You are now logged in as {username}.", extra_tags="alert-info")
-                return redirect("travel:home")
+                return redirect("travel:index")
             else:
                 messages.error(request, "Invalid username or password.", extra_tags="alert-danger")
         else:
@@ -44,7 +44,7 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     messages.info(request, "You have successfully logged out.")
-    return redirect("travel:home")
+    return redirect("travel:index")
 
 
 @login_required

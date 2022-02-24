@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.db import models
 
 
@@ -20,3 +22,7 @@ class Trip(models.Model):
 
     def __repr__(self) -> str:
         return f"<Trip: {self.name}x{self.pk}>"
+
+    @property
+    def is_completed(self):
+        return date.today() > self.end_date
