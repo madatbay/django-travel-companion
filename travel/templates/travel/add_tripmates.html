@@ -29,7 +29,7 @@
       <button class="btn btn-warning d-" type="submit">Save & Continue</button>
     </div>
   </form>
-  <a href="#" class="text-muted text-center d-block mt-2">Budget Planner</a>
+  <a href="{% url 'travel:budget_detail' trip.id %}" class="text-muted text-center d-block mt-2">Budget Planner</a>
 </div>
 <script>
   const search = (input) => {

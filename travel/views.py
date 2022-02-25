@@ -1,10 +1,10 @@
-import email
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from user.models import User
 
-from .forms import BudgetItemForm, DestinationForm, TripDestinationForm, TripForm
+from .forms import (BudgetItemForm, DestinationForm, TripDestinationForm,
+                    TripForm)
 from .models import Budget, BudgetItem, Destination, Trip
 
 
@@ -85,7 +85,7 @@ def add_trip_mates(request, id):
             if len(user):
                 trip.trip_mates.add(User.objects.get(email=user).id)
         return redirect("travel:trip_detail", id=id)
-    context = {"users": User.objects.exclude(email=request.user.email), "mates": trip.trip_mates.all()}
+    context = {"users": User.objects.exclude(email=request.user.email), "mates": trip.trip_mates.all(), "trip": trip}
     return render(request, "travel/add_tripmates.html", context)
 
 
