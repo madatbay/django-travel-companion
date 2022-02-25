@@ -98,7 +98,6 @@ def trip_detail(request, id):
 def create_destination(request):
     if request.method == "POST":
         form = DestinationForm(request.POST, request.FILES)
-        print(form.changed_data)
         if form.is_valid():
             trip = form.save(commit=False)
             trip.user = request.user
@@ -106,4 +105,17 @@ def create_destination(request):
             return redirect("travel:index")
     else:
         form = DestinationForm()
-    return render(request, "travel/create_destination.html", {"form": form})
+    return render(request, "travel/destination_form.html", {"form": form})
+
+
+@login_required
+def update_destination(request, id):
+    instance = Destination.objects.get(id=id)
+    if request.method == "POST":
+        form = DestinationForm(request.POST, request.FILES, instance=instance)
+        if form.is_valid():
+            form.save()
+            return redirect("travel:index")
+    else:
+        form = DestinationForm(instance=instance)
+    return render(request, "travel/destination_form.html", {"form": form})
