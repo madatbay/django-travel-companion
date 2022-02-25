@@ -1,7 +1,7 @@
 {% extends 'travel/base.html' %} {% block content %}
 <h1 class="text-center">{{trip.name}}</h1>
 <div class="col-md-6 col-12">
-  <div class="card border-primary h-100">
+  <div class="card h-100">
     <div class="card-body">
       <span class="badge rounded-pill {% if trip.is_completed %}bg-success{% else %}bg-secondary{% endif %} float-end"
         >{% if trip.is_completed %}Completed{% else %}{{trip.start_date}}{% endif %}</span
@@ -19,7 +19,7 @@
   </div>
 </div>
 <div class="col-md-6 col-12">
-  <div class="card border-success h-100">
+  <div class="card h-100">
     <div class="card-body">
       <h5 class="card-title">Trip Mates</h5>
       {% if not trip.trip_mates.all %}No trip mates found{% endif %}
@@ -33,7 +33,7 @@
   </div>
 </div>
 <div class="col-md-6 col-12 mt-4">
-  <div class="card border-info h-100">
+  <div class="card h-100">
     <div class="card-body">
       <h5 class="card-title">Trip Budget - {{trip.budget.name}}</h5>
 
@@ -69,7 +69,7 @@
   </div>
 </div>
 <div class="col-md-6 col-12 mt-4">
-  <div class="card border-danger h-100">
+  <div class="card h-100">
     <div class="card-body">
       <h5 class="card-title">Destinations</h5>
       {% if not trip.destinations.all %}<p class="text-muted">Not any destinations added to the trip</p>{% endif %}
