@@ -5,7 +5,9 @@ from django.utils.html import mark_safe
 
 
 class UserManager(BaseUserManager):
-    """User Manager that knows how to create users via email instead of username"""
+    """
+    User Manager that knows how to create users via email instead of username
+    """
 
     def _create_user(self, email, password, username="", **extra_fields):
         email = self.normalize_email(email)
@@ -32,6 +34,10 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    """
+    Custom user model for email login with other custom fields
+    """
+    
     username = None
     full_name = models.CharField("Full name", max_length=80, help_text="Max length: 80 sumbols")
     email = models.EmailField("Email", unique=True, max_length=120, help_text="Max length: 120 symbols")

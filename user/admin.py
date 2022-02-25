@@ -7,6 +7,9 @@ from .models import User
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
+    """
+    UserAdmin class to map new custom user to Django-admin
+    """
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = User

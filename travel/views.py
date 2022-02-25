@@ -61,6 +61,9 @@ def budget_detail(request, id: int):
 
 @login_required
 def budget_item_delete(request, id: int):
+    """
+    Delete budget items seperately
+    """
     budget_item = BudgetItem.objects.filter(id=id).first()
     if budget_item:
         budget_item.delete()
@@ -70,6 +73,9 @@ def budget_item_delete(request, id: int):
 
 @login_required
 def budget_item_add_or_update(request, id: int):
+    """
+    Create budget item or update if it exists
+    """
     budget = get_object_or_404(Budget, id=id)
     if request.method == "POST":
         if item_id := request.POST.get("budget_id"):
@@ -85,6 +91,9 @@ def budget_item_add_or_update(request, id: int):
 
 @login_required
 def trip_mate_add(request, id: int):
+    """
+    Add trip mates to the trip
+    """
     trip = get_object_or_404(Trip, id=id)
     if request.method == "POST":
         users: list = request.POST.get("users").split(",")
@@ -126,6 +135,9 @@ def destination_update(request, id: int):
 
 @login_required
 def trip_destination_add(request, id):
+    """
+    Add previously created destination to the trip
+    """
     trip = get_object_or_404(Trip, id=id)
     if request.method == "POST":
         form = TripDestinationForm(request.user, request.POST, instance=trip)

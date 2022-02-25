@@ -6,6 +6,10 @@ from django.shortcuts import redirect, render
 
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 
+### 
+# Handles all authentication features
+###
+
 
 def register_user(request):
     if request.method == "POST":

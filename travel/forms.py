@@ -22,6 +22,9 @@ class DestinationForm(forms.ModelForm):
 
 
 class TripDestinationForm(forms.ModelForm):
+    """
+    Form to add user destinations to the trip
+    """
     destinations = forms.ModelMultipleChoiceField(queryset=None, widget=forms.CheckboxSelectMultiple)
 
     def __init__(self, user, *args, **kwargs):
