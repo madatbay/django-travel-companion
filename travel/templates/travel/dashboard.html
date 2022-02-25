@@ -1,7 +1,7 @@
 {% extends 'travel/base.html' %} {% block content %}
 <div class="wrapper">
   <div class="d-flex align-items-center justify-content-between">
-    <h1>All Trips</h1>
+    <h1>All Trips 🌏</h1>
     <a href="{% url 'travel:trip_create' %}" class="btn btn-outline-info">Add Trip</a>
   </div>
   {% if not trips %}
@@ -30,7 +30,7 @@
 <hr class="my-4" />
 <div class="wrapper mb-4">
   <div class="d-flex align-items-center justify-content-between">
-    <h1>All Destinations</h1>
+    <h1>All Destinations 🌉</h1>
     <a href="{% url 'travel:destination_create' %}" class="btn btn-outline-info">Add Destination</a>
   </div>
   {% if not destinations %}
