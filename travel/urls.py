@@ -18,4 +18,7 @@ urlpatterns = [
     path("destinations/all/", views.destination_all, name="destination_all"),
     path("destinations/create/", views.destination_create, name="destination_create"),
     path("destinations/<int:id>/update/", views.destination_update, name="destination_update"),
+    path("destinations/<int:des_id>/hotels/<int:hotel_id>/delete/", views.destination_hotel_delete, name="destination_hotel_delete"),
+    path("destinations/<int:id>/hotels/add/", views.destination_hotel_add_or_update, name="destination_hotel_add_or_update"),
+
 ]

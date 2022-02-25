@@ -3,8 +3,8 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from user.models import User
 
-from .forms import BudgetItemForm, DestinationForm, TripDestinationForm, TripForm
-from .models import Budget, BudgetItem, Destination, Trip
+from .forms import BudgetItemForm, DestinationForm, HotelForm, TripDestinationForm, TripForm
+from .models import Budget, BudgetItem, Destination, Hotel, Trip
 
 
 def index(request):
@@ -144,7 +144,8 @@ def destination_update(request, id: int):
             return redirect("travel:index")
     else:
         form = DestinationForm(instance=instance)
-    return render(request, "travel/destination_update.html", {"form": form})
+        hform = HotelForm()
+    return render(request, "travel/destination_update.html", {"form": form, "destination": instance, "hform": hform})
 
 
 @login_required
@@ -161,3 +162,29 @@ def trip_destination_add(request, id):
     else:
         form = TripDestinationForm(request.user, instance=trip)
     return render(request, "travel/trip_destination_add.html", {"form": form})
+
+
+@login_required
+def destination_hotel_delete(request, des_id: int, hotel_id: int):
+    if request.method == "POST":
+        hotel = get_object_or_404(Hotel, id=hotel_id)
+        hotel.delete()
+    return redirect("travel:destination_update", id=des_id)
+
+
+@login_required
+def destination_hotel_add_or_update(request, id: int):
+    """
+    Create hotel item or update if it exists
+    """
+    destination = get_object_or_404(Destination, id=id)
+    if request.method == "POST":
+        if item_id := request.POST.get("hotel_id"):
+            form = HotelForm(request.POST, instance=Hotel.objects.get(id=item_id))
+        else:
+            form = HotelForm(request.POST)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.city = destination
+            item.save()
+    return redirect("travel:destination_update", id=id)

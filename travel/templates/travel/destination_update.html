@@ -1,8 +1,8 @@
-{% extends 'travel/base.html' %} {% load widget_tweaks %} {% block content %}
+{% extends 'travel/base.html' %} {% load widget_tweaks %} {% load custom_tags %} {% block content %}
 <div class="col-md-6 col-12 mx-auto">
   <h1 class="text-center">Update Destination</h1>
   <hr />
-  <form method="post" enctype='multipart/form-data'>
+  <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="form-group">
       <label class="text-muted">Destination name</label>
@@ -23,5 +23,93 @@
       <button class="btn btn-warning mt-2" type="submit">Save</button>
     </div>
   </form>
+  <hr />
+  <div class="col-12 mt-2">
+    <h4>Hotels <button class="float-end btn btn-sm btn-outline-warning" onclick="toggleAddModal()">Add Hotel</button></h4>
+    {% if not destination.cities.all %}
+    <p class="text-muted">You don't have ant attached hotels for the destination</p>
+      {% endif %}
+      <div class="d-flex flex-wrap">
+      {% for hotel in destination.cities.all %}
+      <div class="card mx-2 my-2" style="width: 18rem">
+        <div class="card-body">
+          <h5 class="card-title">{{hotel.name}}</h5>
+          <p class="card-text">{% for star in hotel.rate|rangelist %} ⭐️ {% endfor %}</p>
+          <h6 class="card-subtitle mb-2 text-muted">Address: {{hotel.address}}</h6>
+          <h6 class="card-subtitle mb-2 text-muted">Check in: {{hotel.checkin_date}}</h6>
+          <div class="d-flex">
+            <button
+              class="btn btn-sm btn-outline-success"
+              onclick="updateHotel('{{hotel.id}}','{{hotel.name}}','{{hotel.address}}','{{hotel.rate}}','{{hotel.checkin_date|date:'Y-m-d'}}')"
+            >
+              Update
+            </button>
+            <form action="{% url 'travel:destination_hotel_delete' destination.id hotel.id %}" method="POST">
+              {% csrf_token %}
+              <button class="btn btn-sm btn-outline-danger ms-2">Delete</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="addUpdateItemModal" tabindex="-1" aria-labelledby="addUpdateItemModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addUpdateItemModalLabel">Hotel</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="{% url 'travel:destination_hotel_add_or_update' destination.id %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="hotel_id" id="hotel_hidden_input" />
+        <div class="modal-body">
+          <div class="form-group">{{hform.name.label}} {% render_field hform.name id="id_hotel_name" class+="form-control" %} {{hform.name.errors}}</div>
+          <div class="form-group">
+            {{hform.address.label}} {% render_field hform.address class+="form-control" %} {{hform.address.errors}}
+          </div>
+          <div class="form-group">{{hform.rate.label}} {% render_field hform.rate class+="form-select" %} {{hform.rate.errors}}</div>
+          <div class="form-group">
+            {{hform.checkin_date.label}} {% render_field hform.checkin_date class+="form-control" type="date" %}
+            {{hform.checkin_date.errors}}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-warning">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  const updateHotel = (id, name, address, rate, checkin_date) => {
+    document.getElementById("hotel_hidden_input").value = id;
+    document.getElementById("id_hotel_name").value = name;
+    document.getElementById("id_address").value = address;
+    document.getElementById("id_rate").value = rate;
+    document.getElementById("id_checkin_date").value = checkin_date;
+
+    console.log(checkin_date)
+
+    var modal = new bootstrap.Modal(document.getElementById("addUpdateItemModal"));
+    modal.toggle();
+  };
+
+  const toggleAddModal = () => {
+    document.getElementById("hotel_hidden_input").value = null;
+    document.getElementById("id_hotel_name").value = null;
+    document.getElementById("id_address").value = null;
+    document.getElementById("id_rate").value = null;
+    document.getElementById("id_checkin_date").value = null;
+
+    var modal = new bootstrap.Modal(document.getElementById("addUpdateItemModal"));
+    modal.toggle();
+  };
+</script>
 {% endblock content %}

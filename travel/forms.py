@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import BudgetItem, Destination, Trip
+from .models import BudgetItem, Destination, Hotel, Trip
 
 
 class TripForm(forms.ModelForm):
@@ -35,3 +35,9 @@ class TripDestinationForm(forms.ModelForm):
     class Meta:
         model = Trip
         fields = ("destinations",)
+
+
+class HotelForm(forms.ModelForm):
+    class Meta:
+        model = Hotel
+        exclude = ("city",)
