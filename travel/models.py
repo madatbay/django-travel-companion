@@ -78,3 +78,25 @@ class Destination(models.Model):
         if self.image:
             return mark_safe('<img src="{}" width="50" height="50" />'.format(self.image.url))
         return "Not set"
+
+
+class Hotel(models.Model):
+    rate_choices = (
+        (1, 1),
+        (2, 2),
+        (3, 3),
+        (4, 4),
+        (5, 5),
+    )
+    name = models.CharField(max_length=80)
+    address = models.CharField(max_length=200, help_text="Hotel address to locate it easily")
+    city = models.ForeignKey("travel.Destination", on_delete=models.CASCADE, related_name="cities")
+    rate = models.IntegerField(choices=rate_choices, default=1, help_text="Hotel rate you will stay")
+    checkin_date = models.DateField(help_text="Date when is required to check in")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"<Hotel - {self.name}>"
+
+    def __repr__(self) -> str:
+        return f"<Hotel - {self.name}>"

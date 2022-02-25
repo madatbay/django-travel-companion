@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Budget, BudgetItem, Destination, Trip
+from .models import Budget, BudgetItem, Destination, Hotel, Trip
 
 
 @admin.register(Trip)
@@ -69,3 +69,11 @@ class DestinationAdmin(admin.ModelAdmin):
             },
         ),
     )
+
+
+@admin.register(Hotel)
+class HotelAdmin(admin.ModelAdmin):
+    list_display = ["name", "city", "rate", "checkin_date", "created_at"]
+    search_fields = ["name", "city", "rate", "checkin_date", "created_at"]
+    list_filter = ["rate", "checkin_date", "created_at"]
+    readonly_fields = ["created_at"]
