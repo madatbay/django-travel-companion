@@ -1,4 +1,5 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
+                                        PermissionsMixin)
 from django.db import models
 from django.utils.html import mark_safe
 
@@ -59,25 +60,25 @@ class User(AbstractBaseUser, PermissionsMixin):
         return "Not set"
 
     @property
-    def get_avatar(self):
+    def get_avatar(self) -> str:
         if self.avatar:
             return self.avatar.url
         return "/static/user/img/default.png"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{}".format(self.email)
 
     def __repr__(self) -> str:
         return f"[{self.email}]"
 
     @staticmethod
-    def has_perm(perm, obj=None):
+    def has_perm(perm, obj=None) -> bool:
         # "Does the user have a specific permission?"
         # Simplest possible answer: Yes, always
         return True
 
     @staticmethod
-    def has_module_perms(app_label):
+    def has_module_perms(app_label) -> bool:
         # "Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always
         return True
