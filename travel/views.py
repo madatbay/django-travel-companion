@@ -5,12 +5,15 @@ from django.shortcuts import redirect, render
 from user.models import User
 
 from .forms import BudgetItemForm, TripForm
-from .models import Budget, BudgetItem, Trip
+from .models import Budget, BudgetItem, Destination, Trip
 
 
 def index(request):
     if request.user.is_authenticated:
-        context = {"trips": Trip.objects.filter(user=request.user)}
+        context = {
+            "trips": Trip.objects.filter(user=request.user),
+            "destinations": Destination.objects.filter(user=request.user),
+        }
         return render(request, "travel/dashboard.html", context)
     return render(request, "travel/home.html")
 

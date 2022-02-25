@@ -1,27 +1,57 @@
-{% extends 'travel/base.html' %}
-
-{% block content %}
-<div class="d-flex align-items-center justify-content-between">
-<h1>All Trips</h1>
-<a href="{% url 'travel:create_trip' %}" class="btn btn-outline-info">Add Trip</a>
-</div>
-{% if not trips %}<p class="text-muted text-center">You don't have any created event. Create one and start planning</p>{% endif %}
-<div class="row row-cols-1 row-cols-md-3 g-4 mt-0">
+{% extends 'travel/base.html' %} {% block content %}
+<div class="wrapper">
+  <div class="d-flex align-items-center justify-content-between">
+    <h1>All Trips</h1>
+    <div>
+      <a href="{% url 'travel:create_trip' %}" class="btn btn-outline-info">Add Trip</a>
+      <a href="{% url 'travel:create_trip' %}" class="btn btn-outline-info">Add Destination</a>
+    </div>
+  </div>
+  {% if not trips %}
+  <p class="text-muted text-center">You don't have any created event. Create one and start planning</p>
+  {% endif %}
+  <div class="row row-cols-1 row-cols-md-3 g-4 mt-0">
     {% for trip in trips %}
     <div class="col">
-        <div class="card h-100">
-          <div class="card-body">
-            <span class="badge rounded-pill {% if trip.is_completed %}bg-success{% else %}bg-secondary{% endif %} float-end">{% if trip.is_completed %}Completed{% else %}{{trip.start_date}}{% endif %}</span>
-            <h5 class="card-title">{{trip.name}}</h5>
-            <p class="card-text">{{trip.description}}</p>
-            <a href="{% url 'travel:trip_detail' trip.id %}" class="card-link">Manage</a>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Added at: {{trip.created_at}}</small>
-          </div>
+      <div class="card h-100">
+        <div class="card-body">
+          <span class="badge rounded-pill {% if trip.is_completed %}bg-success{% else %}bg-secondary{% endif %} float-end"
+            >{% if trip.is_completed %}Completed{% else %}{{trip.start_date}}{% endif %}</span
+          >
+          <h5 class="card-title">{{trip.name|capfirst}}</h5>
+          <p class="card-text">{{trip.description}}</p>
+          <a href="{% url 'travel:trip_detail' trip.id %}" class="card-link">Manage</a>
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">Added at: {{trip.created_at}}</small>
         </div>
       </div>
-    {% endfor %}    
+    </div>
+    {% endfor %}
+  </div>
+</div>
+<hr class="my-4">
+<div class="wrapper mb-4">
+  {% if not destinations %}
+  <p class="text-muted text-center">You don't have any created event. Create one and start planning</p>
+  {% endif %}
+  <div class="row row-cols-1 row-cols-md-3 g-4 mt-0">
+    {% for destination in destinations %}
+    <div class="col">
+      <div class="card h-100">
+        <img src="{{destination.image.url}}" class="card-img-top" alt="{{destination.name}}">
+        <div class="card-body">
+          <h5 class="card-title">{{destination.name|capfirst}}</h5>
+          <p class="card-text">{{destination.description}}</p>
+          {% comment %} <a href="{% url 'travel:trip_detail' trip.id %}" class="card-link">Manage</a> {% endcomment %}
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">Added at: {{destination.created_at}}</small>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
 </div>
 
 {% endblock content %}

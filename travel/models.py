@@ -64,7 +64,7 @@ class BudgetItem(models.Model):
 class Destination(models.Model):
     user = models.ForeignKey("user.User", related_name="destination", on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
-    descriptions = models.TextField(help_text="Short description for destination")
+    description = models.TextField(help_text="Short description for destination")
     image = models.ImageField(upload_to='destinations/', help_text="Image to identify destination easily")
     created_at = models.DateTimeField(auto_now_add=True)
 

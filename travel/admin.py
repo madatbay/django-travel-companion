@@ -64,7 +64,7 @@ class DestinationAdmin(admin.ModelAdmin):
         (
             "General Information",
             {
-                "fields": ("name", "user", "image", "created_at"),
+                "fields": ("name", "description", "user", "image", "created_at"),
             },
         ),
     )
