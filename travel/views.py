@@ -21,6 +21,12 @@ def index(request):
 
 
 @login_required
+def trip_all(request):
+    trips = Trip.objects.filter(user=request.user)
+    return render(request, "travel/trip_all.html", {"trips": trips})
+
+
+@login_required
 def trip_create(request):
     if request.method == "POST":
         form = TripForm(request.POST)
@@ -55,7 +61,9 @@ def trip_update(request, id: int):
 @login_required
 def budget_detail(request, id: int):
     return render(
-        request, "travel/budget_detail.html", {"budget": get_object_or_404(Trip, id=id).budget, "form": BudgetItemForm()}
+        request,
+        "travel/budget_detail.html",
+        {"budget": get_object_or_404(Trip, id=id).budget, "form": BudgetItemForm()},
     )
 
 
@@ -104,6 +112,12 @@ def trip_mate_add(request, id: int):
         return redirect("travel:trip_detail", id=id)
     context = {"users": User.objects.exclude(email=request.user.email), "mates": trip.trip_mates.all(), "trip": trip}
     return render(request, "travel/add_tripmates.html", context)
+
+
+@login_required
+def destination_all(request):
+    destinations = Destination.objects.filter(user=request.user)
+    return render(request, "travel/destination_all.html", {"destinations": destinations})
 
 
 @login_required

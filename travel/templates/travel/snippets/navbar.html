@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="{% url 'travel:index' %}"> Travel<span class="text-warning">io.</span> </a>
+    <a class="navbar-brand fw-bold fs-4" href="{% url 'travel:index' %}"> Travel<span class="text-warning">io.</span> </a>
     <button
       class="navbar-toggler"
       type="button"
@@ -13,12 +13,17 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+      <ul class="navbar-nav ms-auto mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'travel:index' %}">Home</a>
+          <a class="nav-link mt-1" href="{% url 'travel:index' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link mt-1" href="{% url 'travel:trip_all' %}">Trips</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link mt-1" href="{% url 'travel:destination_all' %}">Destinations</a>
         </li>
         {% if request.user.is_authenticated %}
-        <li></li>
         <li class="nav-item">
           <a class="nav-link d-flex align-items-center" href="{% url 'user:profile' %}">
             <div class="avatar-icon-wrapper">
