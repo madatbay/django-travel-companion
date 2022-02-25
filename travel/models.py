@@ -11,6 +11,9 @@ class Trip(models.Model):
     trip_mates = models.ManyToManyField(
         "user.User", related_name="mates", help_text="Choose who is going with you", blank=True
     )
+    destinations = models.ManyToManyField(
+        "travel.Destination", related_name="destinations", help_text="Add destinations to your trip", blank=True
+    )
     start_date = models.DateField(help_text="Trip start date")
     end_date = models.DateField(help_text="Trip end date")
     created_at = models.DateTimeField(auto_now_add=True)

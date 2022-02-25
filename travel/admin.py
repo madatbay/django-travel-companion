@@ -7,7 +7,7 @@ class TripAdmin(admin.ModelAdmin):
     list_display = ["name", "user", "start_date", "end_date", "created_at"]
     list_filter = ["user", "start_date", "end_date", "created_at"]
     search_fields = ["name", "user", "start_date", "end_date", "created_at"]
-    filter_horizontal = ["trip_mates"]
+    filter_horizontal = ["trip_mates", "destinations"]
 
     fieldsets = (
         (
@@ -19,7 +19,7 @@ class TripAdmin(admin.ModelAdmin):
         (
             "Options",
             {
-                "fields": ("trip_mates",),
+                "fields": ("trip_mates", "destinations"),
             },
         ),
         (

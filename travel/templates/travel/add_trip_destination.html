@@ -1,0 +1,23 @@
+{% extends 'travel/base.html' %} 
+
+{% block content %}
+<h1 class="text-center">Trip Destinations</h1>
+
+<div class="col-lg-6 col-12 mx-auto">
+  <form method="POST">
+    {% csrf_token %}
+    <div class="form-check">
+      {{form.destinations}}
+    </div>
+    <button type="submit" class="btn btn-warning">Save</button>
+  </form>
+</div>
+
+<script>
+  let checkboxes = document.querySelectorAll('input[type=checkbox]');
+  for (const box of checkboxes) {
+    box.classList.add("form-check-input")
+  }
+</script>
+
+{% endblock content %}</div>

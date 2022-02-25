@@ -33,11 +33,11 @@
   </div>
 </div>
 <div class="col-md-6 col-12 mt-4">
-  <div class="card border-success h-100">
+  <div class="card border-info h-100">
     <div class="card-body">
       <h5 class="card-title">Trip Budget - {{trip.budget.name}}</h5>
 
-      <table class="table table-hover">
+      <table class="table table-bordered">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -65,6 +65,27 @@
     <div class="card-footer">
       <b>Total: ${{trip.budget.get_total}}</b>
       <a href="{% url 'travel:budget_detail' trip.id %}" class="float-end">Edit Budget</a>
+    </div>
+  </div>
+</div>
+<div class="col-md-6 col-12 mt-4">
+  <div class="card border-danger h-100">
+    <div class="card-body">
+      <h5 class="card-title">Destinations</h5>
+      <ul class="list-group">
+          {% for destination in trip.destinations.all %}
+          <li class="list-group-item">
+            <div class="float-start">
+              <p>{{destination.name}}</p>
+              <p>{{destination.description}}</p>
+            </div>
+            <img src="{{destination.image.url}}" alt="" width="64" class="float-end">
+          </li>
+          {% endfor %}
+      </ul>
+    </div>
+    <div class="card-footer">
+      <a href="{% url 'travel:add_trip_destination' trip.id %}" class="float-end">Manage Destinations</a>
     </div>
   </div>
 </div>
