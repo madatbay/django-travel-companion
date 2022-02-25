@@ -1,0 +1,27 @@
+{% extends 'travel/base.html' %} {% load widget_tweaks %} {% block content %}
+<div class="col-md-6 col-12 mx-auto">
+  <h1 class="text-center">Update Destination</h1>
+  <hr />
+  <form method="post" enctype='multipart/form-data'>
+    {% csrf_token %}
+    <div class="form-group">
+      <label class="text-muted">Destination name</label>
+      {% render_field form.name class+="form-control" %}
+      <small class="text-danger">{{form.name.errors}}</small>
+    </div>
+    <div class="form-group">
+      <label class="text-muted">Destination description</label>
+      {% render_field form.description class+="form-control" %}
+      <small class="text-danger"> {{form.description.errors}} </small>
+    </div>
+    <div class="form-group">
+      <label class="text-muted">Destination image</label>
+      {% render_field form.image class+="form-control" %}
+      <small class="text-danger">{{form.image.errors}}</small>
+    </div>
+    <div class="d-grid">
+      <button class="btn btn-warning mt-2" type="submit">Save</button>
+    </div>
+  </form>
+</div>
+{% endblock content %}

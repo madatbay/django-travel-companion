@@ -131,7 +131,7 @@ def destination_create(request):
             return redirect("travel:index")
     else:
         form = DestinationForm()
-    return render(request, "travel/destination_form.html", {"form": form})
+    return render(request, "travel/destination_create.html", {"form": form})
 
 
 @login_required
@@ -144,7 +144,7 @@ def destination_update(request, id: int):
             return redirect("travel:index")
     else:
         form = DestinationForm(instance=instance)
-    return render(request, "travel/destination_form.html", {"form": form})
+    return render(request, "travel/destination_update.html", {"form": form})
 
 
 @login_required
