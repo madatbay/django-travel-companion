@@ -1,0 +1,157 @@
+{% extends 'travel/base.html' %} 
+{% load widget_tweaks %}
+
+{% block content %}
+<h1 class="text-center">Trip Budget - {{ budget.name }}</h1>
+
+<div class="col-lg-6 col-12 mt-4 mx-auto">
+  <div class="card border-success h-100">
+    <div class="card-body">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Label</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Item Price</th>
+            <th scope="col">Subtotal</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for budget in budget.budgetitem_set.all %}
+
+          <tr id="budget-{{budget.id}}" class="budget-item" data-subtotal="{{budget.get_subtotal}}">
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{budget.label}}</td>
+            <td>x{{budget.quantity}}</td>
+            <td>${{budget.item_price}}</td>
+            <td>${{budget.get_subtotal}}</td>
+            <td>
+              <button class="btn" onclick="updateBudget('{{budget.id}}', '{{budget.label}}','{{budget.quantity}}','{{budget.item_price}}')">Update</button>
+              <button class="btn text-danger" onclick="deleteBudget('{{budget.id}}')">Delete</button>
+            </td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+      <hr>
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="actions">
+          <button class="btn btn-sm btn-warning" onclick="toggleAddModal()">Add Item</button>
+        </div>
+        <div class="fw-bold float-end">Total: $<span id="total">{{ budget.get_total }}</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addUpdateItemModal" tabindex="-1" aria-labelledby="addUpdateItemModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addUpdateItemModalLabel">Add Budget Item</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="{% url 'travel:add_or_update_budget_item' budget.id %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="budget_id" id="budget_hidden_input">
+        <div class="modal-body">
+          <div class="form-group">
+            {{form.label.label}}
+            {% render_field form.label class+="form-control" %}
+            {{form.label.errors}}
+          </div>
+          <div class="form-group">
+            {{form.quantity.label}}
+            {% render_field form.quantity class+="form-control" %}
+            {{form.quantity.errors}}
+          </div>
+          <div class="form-group">
+            {{form.item_price.label}}
+            {% render_field form.item_price class+="form-control" %}
+            {{form.item_price.errors}}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-warning">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+
+  const calculateTotal = () => {
+    let total = 0
+    allItems = document.getElementsByClassName("budget-item")
+    for (const item of allItems) {
+        total += Number(item.dataset.subtotal)
+    }
+
+    document.getElementById("total").innerText = total
+  }
+
+  const getCookie = name => {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+              var cookie = cookies[i].trim();
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+    }
+
+  const deleteBudget = id => {
+      let endpoint = `/budget/delete/${id}/`
+
+      fetch(endpoint, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          "X-CSRFToken": getCookie('csrftoken'),
+        },
+      })
+      .then(data => {
+        document.getElementById(`budget-${id}`).remove()
+        calculateTotal()
+        })
+      .catch(error => {
+        console.error("Error on budget item delete: ", error["error"]);
+      })
+    }
+
+    const updateBudget = (id, label, quantity, item_price) => {
+      document.getElementById("budget_hidden_input").value = id
+      document.getElementById("id_label").value = label
+      document.getElementById("id_quantity").value = quantity
+      document.getElementById("id_item_price").value = item_price
+
+      var modal = new bootstrap.Modal(document.getElementById('addUpdateItemModal'),  {
+        keyboard: false
+      })
+      modal.toggle()
+    }
+
+    const toggleAddModal = () => {
+      document.getElementById("budget_hidden_input").value = null
+      document.getElementById("id_label").value = null
+      document.getElementById("id_quantity").value = null
+      document.getElementById("id_item_price").value = null
+
+      var modal = new bootstrap.Modal(document.getElementById('addUpdateItemModal'),  {
+        keyboard: false
+      })
+      modal.toggle()
+    }
+</script>
+
+{% endblock content %}</div>

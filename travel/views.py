@@ -1,10 +1,11 @@
 import email
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from user.models import User
 
-from .forms import TripForm
-from .models import Trip
+from .forms import BudgetItemForm, TripForm
+from .models import Budget, BudgetItem, Trip
 
 
 def index(request):
@@ -39,6 +40,36 @@ def edit_trip(request, id):
     else:
         form = TripForm(instance=trip)
     return render(request, "travel/create_trip.html", {"form": form})
+
+
+@login_required
+def budget_detail(request, id):
+    context = {"budget": Budget.objects.get(trip=id), "form": BudgetItemForm()}
+    return render(request, "travel/budget_detail.html", context)
+
+
+@login_required
+def delete_budget_item(request, id):
+    budget_item = BudgetItem.objects.filter(id=id).first()
+    if budget_item:
+        budget_item.delete()
+        return JsonResponse({"status": "true", "message": f"Budget item {id} successfully deleted"}, status=204)
+    return JsonResponse({"status": "false", "message": f"Cannot delete budget item {id}"}, status=400)
+
+
+@login_required
+def add_or_update_budget_item(request, id):
+    budget = Budget.objects.get(id=id)
+    if request.method == "POST":
+        if item_id := request.POST.get("budget_id"):
+            form = BudgetItemForm(request.POST, instance=BudgetItem.objects.get(id=item_id))
+        else:
+            form = BudgetItemForm(request.POST)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.budget = budget
+            item.save()
+    return redirect("travel:budget_detail", id=budget.trip.id)
 
 
 @login_required
