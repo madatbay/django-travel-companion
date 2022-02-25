@@ -9,8 +9,13 @@
     <div class="form-check">
       {{form.destinations}}
     </div>
-    <button type="submit" class="btn btn-warning">Save</button>
+    <button type="submit" class="btn btn-warning mt-2">Save</button>
   </form>
+  <hr>
+  <div>
+    Would you like to add a new destination?
+    <a href="{% url 'travel:destination_create' %}" class="btn btn-outline-warning">Create</a>
+  </div>
 </div>
 
 <script>
