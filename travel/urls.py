@@ -12,4 +12,5 @@ urlpatterns = [
     path("trips/<int:id>/budget/", views.budget_detail, name="budget_detail"),
     path("budget/delete/<int:id>/", views.delete_budget_item, name="delete_budget_item"),
     path("budget/add/<int:id>/", views.add_or_update_budget_item, name="add_or_update_budget_item"),
+    path("destinations/create/", views.create_destination, name="create_destination"),
 ]

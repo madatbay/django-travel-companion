@@ -1,50 +1,47 @@
-{% extends 'travel/base.html' %}
-{% load widget_tweaks %}
-
-{% block content %}
+{% extends 'travel/base.html' %} {% load widget_tweaks %} {% block content %}
 <div class="col-md-6 col-12 mx-auto">
-    <h1 class="text-center">Add New Trip</h1>
-    <hr>
-    <form method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label class="text-muted">Trip name</label>
-            {% render_field form.name class+="form-control" %}
-            {{trip.name.errors}}
-        </div>
-        <div class="form-group">
-            <label class="text-muted">Trip description</label>
-            {% render_field form.description class+="form-control" %}
-            {{trip.description.errors}}
-        </div>
-        <div class="form-group">
-            <label class="text-muted">Trip metes</label>
-            {% render_field form.trip_mates class+="form-control" %}
-            {{trip.trip_mates.errors}}
-        </div>
-        <div class="d-flex">
-            <div class="form-group">
-                <label class="text-muted">Start date</label>
-                {% render_field form.start_date class+="form-control" type="date" %}
-                {{trip.start_date.errors}}
-            </div>
-            <div class="form-group ms-2">
-                <label class="text-muted">End date</label>
-                {% render_field form.end_date class+="form-control" type="date" %}
-                {{trip.end_date.errors}}
-            </div>
-        </div>
-        <div class="d-grid">
-            <button class="btn btn-warning mt-2" type="submit">Create</button>
-        </div>
-    </form>
+  <h1 class="text-center">Add New Trip</h1>
+  <hr />
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label class="text-muted">Trip name</label>
+      {% render_field form.name class+="form-control" %}
+      <small class="text-danger"> {{form.name.errors}} </small>
+    </div>
+    <div class="form-group">
+      <label class="text-muted">Trip description</label>
+      {% render_field form.description class+="form-control" %}
+      <small class="text-danger"> {{form.description.errors}} </small>
+    </div>
+    <div class="form-group">
+      <label class="text-muted">Trip mates</label>
+      {% render_field form.trip_mates class+="form-control" %}
+      <small class="text-danger"> {{form.trip_mates.errors}} </small>
+    </div>
+    <div class="d-flex">
+      <div class="form-group">
+        <label class="text-muted">Start date</label>
+        {% render_field form.start_date class+="form-control" type="date" %}
+        <small class="text-danger"> {{form.start_date.errors}} </small>
+      </div>
+      <div class="form-group ms-2">
+        <label class="text-muted">End date</label>
+        {% render_field form.end_date class+="form-control" type="date" %}
+        <small class="text-danger"> {{form.end_date.errors}} </small>
+      </div>
+    </div>
+    <div class="d-grid">
+      <button class="btn btn-warning mt-2" type="submit">Create</button>
+    </div>
+  </form>
 </div>
 <script>
-    tripMates = document.getElementById("id_trip_mates").options
-    for (const mate of tripMates) {
-        if (mate.innerText == "{{request.user.email}}"){
-            mate.remove()
-        }
+  tripMates = document.getElementById("id_trip_mates").options;
+  for (const mate of tripMates) {
+    if (mate.innerText == "{{request.user.email}}") {
+      mate.remove();
     }
+  }
 </script>
 {% endblock content %}

@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from user.models import User
 
-from .forms import BudgetItemForm, TripForm
+from .forms import BudgetItemForm, DestinationForm, TripForm
 from .models import Budget, BudgetItem, Destination, Trip
 
 
@@ -89,5 +89,21 @@ def add_trip_mates(request, id):
     return render(request, "travel/add_tripmates.html", context)
 
 
+@login_required
 def trip_detail(request, id):
     return render(request, "travel/trip_detail.html", {"trip": Trip.objects.get(id=id)})
+
+
+@login_required
+def create_destination(request):
+    if request.method == "POST":
+        form = DestinationForm(request.POST, request.FILES)
+        print(form.changed_data)
+        if form.is_valid():
+            trip = form.save(commit=False)
+            trip.user = request.user
+            trip.save()
+            return redirect("travel:index")
+    else:
+        form = DestinationForm()
+    return render(request, "travel/create_destination.html", {"form": form})
