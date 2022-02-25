@@ -73,19 +73,20 @@
     <div class="card-body">
       <h5 class="card-title">Destinations</h5>
       {% if not trip.destinations.all %}<p class="text-muted">Not any destinations added to the trip</p>{% endif %}
-      <ul class="list-group">
-          {% for destination in trip.destinations.all %}
-          <li class="list-group-item">
-            <div class="float-start">
-              <p>{{destination.name}}</p>
-              <p>{{destination.description}}</p>
-            </div>
-            <img src="{{destination.image.url}}" alt="" width="64" class="float-end">
-          </li>
-          {% endfor %}
-      </ul>
+      <div class="d-flex">
+        {% for destination in trip.destinations.all|slice:3 %}
+        <div class="card mx-1" style="width: 12rem;">
+          <img src="{{destination.image.url}}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">{{destination.name}}</h5>
+            <p class="card-text">{{destination.description}}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
     </div>
-    <div class="card-footer">
+    <div class="card-footer d-flex justify-content-between">
+      <p class="text-muted">Only 3 of your destinations shown here</p>
       <a href="{% url 'travel:trip_destination_add' trip.id %}" class="float-end">Manage Destinations</a>
     </div>
   </div>
