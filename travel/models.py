@@ -28,12 +28,12 @@ class Trip(models.Model):
         return f"<Trip: {self.name}x{self.pk}>"
 
     @property
-    def is_completed(self):
+    def is_completed(self) -> bool:
         return date.today() > self.end_date
 
 
 class Budget(models.Model):
-    trip = models.OneToOneField("travel.Trip", on_delete=models.CASCADE)
+    trip = models.OneToOneField("travel.Trip", on_delete=models.CASCADE, help_text="Link Budget item to any trip")
     name = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -41,34 +41,33 @@ class Budget(models.Model):
         return self.name
 
     @property
-    def get_total(self):
-        items = self.budgetitem_set.all()
+    def get_total(self) -> float:
         total = 0
-        for item in items:
+        for item in self.budgetitem_set.all():
             total += item.quantity * item.item_price
         return total
 
 
 class BudgetItem(models.Model):
-    budget = models.ForeignKey("travel.Budget", on_delete=models.CASCADE)
-    label = models.CharField(max_length=50)
+    budget = models.ForeignKey("travel.Budget", on_delete=models.CASCADE, help_text="Parent budget")
+    label = models.CharField(max_length=50, help_text="Name for the expence")
     quantity = models.PositiveIntegerField(default=1)
-    item_price = models.PositiveIntegerField(default=0, help_text="Price for item per 1 quantity")
+    item_price = models.FloatField(default=0, help_text="Price for item per 1 quantity")
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self) -> str:
+    def __str__(self) -> float:
         return self.label
 
     @property
-    def get_subtotal(self):
+    def get_subtotal(self) -> int:
         return self.quantity * self.item_price
 
 
 class Destination(models.Model):
     user = models.ForeignKey("user.User", related_name="destination", on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, help_text="Destination name (City, Country, etc.)")
     description = models.TextField(help_text="Short description for destination")
-    image = models.ImageField(upload_to='destinations/', help_text="Image to identify destination easily")
+    image = models.ImageField(upload_to="destinations/", help_text="Image to identify destination easily")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:

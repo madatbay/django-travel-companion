@@ -6,14 +6,14 @@ app_name = "travel"
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("trips/create/", views.create_trip, name="create_trip"),
+    path("trips/create/", views.trip_create, name="trip_create"),
     path("trips/<int:id>/", views.trip_detail, name="trip_detail"),
-    path("trips/<int:id>/add-tripmates/", views.add_trip_mates, name="add_trip_mates"),
-    path("trips/<int:id>/add-destination/", views.add_trip_destination, name="add_trip_destination"),
-    path("trips/<int:id>/edit/", views.edit_trip, name="edit_trip"),
+    path("trips/<int:id>/edit/", views.trip_update, name="trip_update"),
+    path("trips/<int:id>/add-tripmates/", views.trip_mate_add, name="trip_mate_add"),
+    path("trips/<int:id>/add-destination/", views.trip_destination_add, name="trip_destination_add"),
     path("trips/<int:id>/budget/", views.budget_detail, name="budget_detail"),
-    path("budget/delete/<int:id>/", views.delete_budget_item, name="delete_budget_item"),
-    path("budget/add/<int:id>/", views.add_or_update_budget_item, name="add_or_update_budget_item"),
-    path("destinations/create/", views.create_destination, name="create_destination"),
-    path("destinations/<int:id>/update/", views.update_destination, name="update_destination"),
+    path("budget/delete/<int:id>/", views.budget_item_delete, name="budget_item_delete"),
+    path("budget/add/<int:id>/", views.budget_item_add_or_update, name="budget_item_add_or_update"),
+    path("destinations/create/", views.destination_create, name="destination_create"),
+    path("destinations/<int:id>/update/", views.destination_update, name="destination_update"),
 ]

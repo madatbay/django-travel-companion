@@ -1,10 +1,13 @@
 from django import forms
-from .models import Destination, Trip, BudgetItem
+
+from .models import BudgetItem, Destination, Trip
+
 
 class TripForm(forms.ModelForm):
     class Meta:
         model = Trip
         exclude = ("user", "trip_mates")
+
 
 class BudgetItemForm(forms.ModelForm):
     class Meta:
@@ -17,16 +20,15 @@ class DestinationForm(forms.ModelForm):
         model = Destination
         exclude = ("user",)
 
+
 class TripDestinationForm(forms.ModelForm):
-    destinations = forms.ModelMultipleChoiceField(
-        queryset=None,
-        widget=forms.CheckboxSelectMultiple
-    )
+    destinations = forms.ModelMultipleChoiceField(queryset=None, widget=forms.CheckboxSelectMultiple)
+
     def __init__(self, user, *args, **kwargs):
         super(self.__class__, self).__init__(*args, **kwargs)
         if user:
-            self.fields['destinations'].queryset = Destination.objects.all().filter(user=user)
+            self.fields["destinations"].queryset = Destination.objects.all().filter(user=user)
 
     class Meta:
         model = Trip
-        fields = ('destinations',)
+        fields = ("destinations",)

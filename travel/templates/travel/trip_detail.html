@@ -14,7 +14,7 @@
     </div>
     <div class="card-footer">
       <small class="text-muted">Added at: {{trip.created_at}}</small>
-      <a href="{% url 'travel:edit_trip' trip.id %}" class="float-end">Edit Trip</a>
+      <a href="{% url 'travel:trip_update' trip.id %}" class="float-end">Edit Trip</a>
     </div>
   </div>
 </div>
@@ -28,7 +28,7 @@
       {% endfor %}
     </div>
     <div class="card-footer">
-      <a href="{% url 'travel:add_trip_mates' trip.id %}" class="float-end">Edit Mates</a>
+      <a href="{% url 'travel:trip_mate_add' trip.id %}" class="float-end">Edit Mates</a>
     </div>
   </div>
 </div>
@@ -72,6 +72,7 @@
   <div class="card border-danger h-100">
     <div class="card-body">
       <h5 class="card-title">Destinations</h5>
+      {% if not trip.destinations.all %}<p class="text-muted">Not any destinations added to the trip</p>{% endif %}
       <ul class="list-group">
           {% for destination in trip.destinations.all %}
           <li class="list-group-item">
@@ -85,7 +86,7 @@
       </ul>
     </div>
     <div class="card-footer">
-      <a href="{% url 'travel:add_trip_destination' trip.id %}" class="float-end">Manage Destinations</a>
+      <a href="{% url 'travel:trip_destination_add' trip.id %}" class="float-end">Manage Destinations</a>
     </div>
   </div>
 </div>

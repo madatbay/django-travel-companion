@@ -2,7 +2,7 @@
 <div class="wrapper">
   <div class="d-flex align-items-center justify-content-between">
     <h1>All Trips</h1>
-    <a href="{% url 'travel:create_trip' %}" class="btn btn-outline-info">Add Trip</a>
+    <a href="{% url 'travel:trip_create' %}" class="btn btn-outline-info">Add Trip</a>
   </div>
   {% if not trips %}
   <p class="text-muted text-center">You don't have any created event. Create one and start planning</p>
@@ -31,7 +31,7 @@
 <div class="wrapper mb-4">
   <div class="d-flex align-items-center justify-content-between">
     <h1>All Destinations</h1>
-    <a href="{% url 'travel:create_destination' %}" class="btn btn-outline-info">Add Destination</a>
+    <a href="{% url 'travel:destination_create' %}" class="btn btn-outline-info">Add Destination</a>
   </div>
   {% if not destinations %}
   <p class="text-muted text-center">You don't have any created event. Create one and start planning</p>
@@ -44,7 +44,7 @@
         <div class="card-body">
           <h5 class="card-title">{{destination.name|capfirst}}</h5>
           <p class="card-text">{{destination.description}}</p>
-         <a href="{% url 'travel:update_destination' destination.id %}" class="card-link">Edit</a>
+         <a href="{% url 'travel:destination_update' destination.id %}" class="card-link">Edit</a>
         </div>
         <div class="card-footer">
           <small class="text-muted">Added at: {{destination.created_at}}</small>

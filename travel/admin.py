@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Destination, Trip, Budget, BudgetItem
+
+from .models import Budget, BudgetItem, Destination, Trip
 
 
 @admin.register(Trip)
