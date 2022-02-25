@@ -1,7 +1,10 @@
 {% extends 'travel/base.html' %} {% load widget_tweaks %} {% load custom_tags %} {% block content %}
-<div class="col-md-6 col-12 mx-auto">
-  <h1 class="text-center">Update Destination</h1>
-  <hr />
+<h1 class="text-center">Update Destination</h1>
+<hr />
+<div class="col-md-6 col-12">
+  <div class="img-wrapper">
+    <img src="{{destination.image.url}}" alt="">
+  </div>
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="form-group">
@@ -23,13 +26,14 @@
       <button class="btn btn-warning mt-2" type="submit">Save</button>
     </div>
   </form>
-  <hr />
+</div>
+<div class="col-md-6 col-12">
   <div class="col-12 mt-2">
-    <h4>Hotels 🏨<button class="float-end btn btn-sm btn-outline-warning" onclick="toggleAddModal()">Add Hotel</button></h4>
+    <h3>Hotels 🏨<button class="float-end btn btn-sm btn-outline-warning" onclick="toggleAddModal()">Add Hotel</button></h3>
     {% if not destination.cities.all %}
     <p class="text-muted">You don't have ant attached hotels for the destination</p>
       {% endif %}
-      <div class="d-flex flex-wrap">
+      <div class="d-flex justify-content-around flex-wrap">
       {% for hotel in destination.cities.all %}
       <div class="card mx-2 my-2" style="width: 18rem">
         <div class="card-body">
