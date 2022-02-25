@@ -1,10 +1,11 @@
 from datetime import date
 
 from django.db import models
+from django.utils.html import mark_safe
 
 
 class Trip(models.Model):
-    user = models.ForeignKey("user.User", related_name="user", on_delete=models.CASCADE)
+    user = models.ForeignKey("user.User", related_name="trip", on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=200, help_text="Short trip description")
     trip_mates = models.ManyToManyField(
@@ -59,3 +60,19 @@ class BudgetItem(models.Model):
     def get_subtotal(self):
         return self.quantity * self.item_price
 
+
+class Destination(models.Model):
+    user = models.ForeignKey("user.User", related_name="destination", on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    descriptions = models.TextField(help_text="Short description for destination")
+    image = models.ImageField(upload_to='destinations/', help_text="Image to identify destination easily")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return self.name
+
+    @property
+    def img_preview(self):
+        if self.image:
+            return mark_safe('<img src="{}" width="50" height="50" />'.format(self.image.url))
+        return "Not set"

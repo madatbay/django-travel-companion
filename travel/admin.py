@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Trip, Budget, BudgetItem
+from .models import Destination, Trip, Budget, BudgetItem
 
 
 @admin.register(Trip)
@@ -44,10 +44,27 @@ class BudgetAdmin(admin.ModelAdmin):
     readonly_fields = ["created_at"]
 
     fieldsets = (
-        ("General Information", {
-            "fields": (
-                "name", "trip", "created_at"
-            ),
-        }), 
+        (
+            "General Information",
+            {
+                "fields": ("name", "trip", "created_at"),
+            },
+        ),
     )
-    
+
+
+@admin.register(Destination)
+class DestinationAdmin(admin.ModelAdmin):
+    list_display = ["name", "user", "img_preview", "created_at"]
+    search_fields = ["name", "user", "created_at"]
+    list_filter = ["created_at", "user"]
+    readonly_fields = ["created_at"]
+
+    fieldsets = (
+        (
+            "General Information",
+            {
+                "fields": ("name", "user", "image", "created_at"),
+            },
+        ),
+    )
