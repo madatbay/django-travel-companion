@@ -1,10 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.timezone import datetime
 from user.models import User
 
-from .forms import BudgetItemForm, DestinationForm, HotelForm, TripDestinationForm, TripForm
-from .models import Budget, BudgetItem, Destination, Hotel, Trip
+from .forms import (BudgetItemForm, DestinationForm, HotelForm,
+                    TripDestinationForm, TripForm)
+from .models import Budget, BudgetItem, Destination, Flight, Hotel, Trip
 
 
 def index(request):
@@ -15,6 +17,7 @@ def index(request):
             {
                 "trips": Trip.objects.filter(user=request.user),
                 "destinations": Destination.objects.filter(user=request.user),
+                "flights": Flight.objects.filter(user=request.user, checkin_date__gt=datetime.today())
             },
         )
     return render(request, "travel/home.html")

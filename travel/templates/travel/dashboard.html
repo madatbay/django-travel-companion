@@ -1,5 +1,22 @@
 {% extends 'travel/base.html' %} {% block content %}
 <div class="wrapper">
+  <div class="col-12 mb-4">
+    <h4>Upcoming flights ⏰</h4>
+    <div class="card d-flex flex-row py-2 px-1">
+      {% for flight in flights %}
+        <div class="card bg-light mx-1" style="width: 14rem;">
+          <div class="card-body">
+            <b>#{{forloop.counter}} {{flight.trip}}</b>
+            <p>Flight from: {{flight.from_loc}}</p>
+            <p class=>Flight to: {{flight.to_loc}}</p>
+            <hr>
+            <small>Check in: {{flight.checkin_date}}</small>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  <hr>
   <div class="d-flex align-items-center justify-content-between">
     <h1>All Trips 🌏</h1>
     <a href="{% url 'travel:trip_create' %}" class="btn btn-outline-info">Add Trip</a>
