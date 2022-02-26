@@ -1,5 +1,5 @@
 from datetime import date
-
+from django.utils import timezone
 from django.db import models
 from django.utils.html import mark_safe
 
@@ -105,13 +105,27 @@ class Hotel(models.Model):
 class Flight(models.Model):
     user = models.ForeignKey("user.User", related_name="user", on_delete=models.CASCADE)
     trip = models.ForeignKey("travel.Trip", related_name="trip", on_delete=models.CASCADE)
-    from_loc = models.ForeignKey("travel.Destination", related_name="from_loc", on_delete=models.CASCADE, help_text="Point the location where you will fly")
-    to_loc = models.ForeignKey("travel.Destination", related_name="to_loc", on_delete=models.CASCADE, help_text="Point the destination where to fly")
+    from_loc = models.ForeignKey(
+        "travel.Destination",
+        related_name="from_loc",
+        on_delete=models.CASCADE,
+        help_text="Point the location where you will fly",
+    )
+    to_loc = models.ForeignKey(
+        "travel.Destination",
+        related_name="to_loc",
+        on_delete=models.CASCADE,
+        help_text="Point the destination where to fly",
+    )
     checkin_date = models.DateTimeField(help_text="Date when is required to check in")
     created_at = models.DateTimeField(auto_now_add=True)
 
     @property
-    def flight_name(self):
+    def is_active(self) -> bool:
+        return self.checkin_date > timezone.now()
+
+    @property
+    def flight_name(self) -> str:
         return f"Flight {self.from_loc}-{self.to_loc}"
 
     def __str__(self) -> str:

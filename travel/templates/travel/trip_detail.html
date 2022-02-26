@@ -75,7 +75,7 @@
       {% if not trip.destinations.all %}<p class="text-muted">Not any destinations added to the trip</p>{% endif %}
       <div class="d-flex">
         {% for destination in trip.destinations.all|slice:3 %}
-        <div class="card mx-1" style="width: 12rem;">
+        <div class="card me-1" style="width: 12rem;">
           <img src="{{destination.image.url}}" class="card-img-top" alt="...">
           <div class="card-body">
             <h5 class="card-title">{{destination.name}}</h5>
@@ -86,8 +86,32 @@
       </div>
     </div>
     <div class="card-footer d-flex justify-content-between">
-      <p class="text-muted">Only 3 of your destinations shown here</p>
+      <span class="text-muted">Only 3 of your destinations shown here</span>
       <a href="{% url 'travel:trip_destination_add' trip.id %}" class="float-end">Manage Destinations</a>
+    </div>
+  </div>
+</div>
+<div class="col-md-6 col-12 mt-4">
+  <div class="card h-100">
+    <div class="card-body">
+      <h5 class="card-title">Flights</h5>
+      {% if not trip.trip.all %}<p class="text-muted">Not any flights added to the trip</p>{% endif %}
+      <div class="d-flex flex-wrap">
+        {% for flight in trip.trip.all %}
+        <div class="card me-1" style="width: 12rem;">
+          <div class="card-body">
+            <p class="card-text"><b>Flight {{flight.id}}</b></p>
+            <p class="card-text">From: {{flight.from_loc}}</p>
+            <p class="card-text">To: {{flight.from_loc}}</p>
+            <p class="card-text">Check in:  {% if flight.is_active %}{{flight.checkin_date}}{% else %}Completed{% endif %}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+      <span class="text-muted">Only 3 of your flights shown here</span>
+      <a href="{% url 'travel:trip_destination_add' trip.id %}" class="float-end">Manage Flights</a>
     </div>
   </div>
 </div>

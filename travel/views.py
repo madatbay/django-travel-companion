@@ -45,6 +45,7 @@ def trip_create(request):
 
 @login_required
 def trip_detail(request, id):
+    
     return render(request, "travel/trip_detail.html", {"trip": get_object_or_404(Trip, id=id)})
 
 
