@@ -107,7 +107,7 @@ class Flight(models.Model):
     trip = models.ForeignKey("travel.Trip", related_name="trip", on_delete=models.CASCADE)
     from_loc = models.ForeignKey("travel.Destination", related_name="from_loc", on_delete=models.CASCADE, help_text="Point the location where you will fly")
     to_loc = models.ForeignKey("travel.Destination", related_name="to_loc", on_delete=models.CASCADE, help_text="Point the destination where to fly")
-    checkin_date = models.DateField(help_text="Date when is required to check in")
+    checkin_date = models.DateTimeField(help_text="Date when is required to check in")
     created_at = models.DateTimeField(auto_now_add=True)
 
     @property
