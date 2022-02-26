@@ -4,8 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import datetime
 from user.models import User
 
-from .forms import (BudgetItemForm, DestinationForm, HotelForm,
-                    TripDestinationForm, TripForm)
+from .forms import BudgetItemForm, DestinationForm, FlightForm, HotelForm, TripDestinationForm, TripForm
 from .models import Budget, BudgetItem, Destination, Flight, Hotel, Trip
 
 
@@ -17,7 +16,7 @@ def index(request):
             {
                 "trips": Trip.objects.filter(user=request.user),
                 "destinations": Destination.objects.filter(user=request.user),
-                "flights": Flight.objects.filter(user=request.user, checkin_date__gt=datetime.today())
+                "flights": Flight.objects.filter(user=request.user, checkin_date__gt=datetime.today()),
             },
         )
     return render(request, "travel/home.html")
@@ -45,7 +44,7 @@ def trip_create(request):
 
 @login_required
 def trip_detail(request, id):
-    
+
     return render(request, "travel/trip_detail.html", {"trip": get_object_or_404(Trip, id=id)})
 
 
@@ -192,3 +191,44 @@ def destination_hotel_add_or_update(request, id: int):
             item.city = destination
             item.save()
     return redirect("travel:destination_update", id=id)
+
+
+@login_required
+def flight_list(request, id: int):
+    return render(
+        request,
+        "travel/flight_list.html",
+        {"flights": Flight.objects.filter(user=request.user, trip__id=id), "form": FlightForm()},
+    )
+
+
+@login_required
+def flight_add_or_update(request, id: int):
+    """
+    Create flight or update if it exists
+    """
+    trip = get_object_or_404(Trip, id=id)
+    if request.method == "POST":
+        if item_id := request.POST.get("flight_id"):
+            form = FlightForm(request.POST, instance=Flight.objects.get(id=item_id))
+        else:
+            form = FlightForm(request.POST)
+        if form.is_valid():
+            item = form.save(commit=False)
+            if not "user" in item.__dict__.keys():
+                item.user = request.user
+                item.trip = trip
+            item.save()
+    return redirect("travel:flight_list", id=trip.id)
+
+
+@login_required
+def flight_delete(request, id: int):
+    """
+    Delete flight items seperately
+    """
+    flight = Flight.objects.filter(id=id).first()
+    if flight:
+        flight.delete()
+        return JsonResponse({"status": "true", "message": f"Flight {id} successfully deleted"}, status=204)
+    return JsonResponse({"status": "false", "message": f"Cannot delete flight {id}"}, status=400)

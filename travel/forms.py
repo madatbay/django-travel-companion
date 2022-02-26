@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import BudgetItem, Destination, Hotel, Trip
+from .models import BudgetItem, Destination, Flight, Hotel, Trip
 
 
 class TripForm(forms.ModelForm):
@@ -25,6 +25,7 @@ class TripDestinationForm(forms.ModelForm):
     """
     Form to add user destinations to the trip
     """
+
     destinations = forms.ModelMultipleChoiceField(queryset=None, widget=forms.CheckboxSelectMultiple)
 
     def __init__(self, user, *args, **kwargs):
@@ -41,3 +42,9 @@ class HotelForm(forms.ModelForm):
     class Meta:
         model = Hotel
         exclude = ("city",)
+
+
+class FlightForm(forms.ModelForm):
+    class Meta:
+        model = Flight
+        exclude = ("user", "trip")

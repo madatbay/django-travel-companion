@@ -1,0 +1,144 @@
+{% extends 'travel/base.html' %} 
+{% load widget_tweaks %}
+
+{% block content %}
+<h1 class="text-center">Flights</h1>
+
+<div class="col-lg-8 col-12 mt-4 mx-auto">
+  <div class="card h-100">
+    <div class="card-body">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">From</th>
+            <th scope="col">To</th>
+            <th scope="col">Check in</th>
+            <th scope="col">Created at</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for flight in flights %}
+
+          <tr id="flight-{{flight.id}}" class="flight-item">
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{flight.from_loc}}</td>
+            <td>{{flight.to_loc}}</td>
+            <td>{{flight.checkin_date}}</td>
+            <td>{{flight.created_at}}</td>
+            <td>
+              <button class="btn" onclick="updateFlight('{{flight.id}}', '{{flight.from_loc}}','{{flight.to_loc}}','{{flight.checkin_date|date:'Y-m-d'}}')">Update</button>
+              <button class="btn text-danger" onclick="deleteFlight('{{flight.id}}')">Delete</button>
+            </td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+      <hr>
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="actions">
+          <button class="btn btn-sm btn-warning" onclick="toggleAddModal()">Add Flight</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addUpdateItemModal" tabindex="-1" aria-labelledby="addUpdateItemModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addUpdateItemModalLabel">Add Flight</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="{% url 'travel:flight_add_or_update' flights.0.trip.id %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="flight_id" id="flight_hidden_input">
+        <div class="modal-body">
+          <div class="form-group">
+            {{form.from_loc.label}}
+            {% render_field form.from_loc class+="form-select" %}
+            {{form.from_loc.errors}}
+          </div>
+          <div class="form-group">
+            {{form.to_loc.label}}
+            {% render_field form.to_loc class+="form-select" %}
+            {{form.to_loc.errors}}
+          </div>
+          <div class="form-group">
+            {{form.checkin_date.label}}
+            {% render_field form.checkin_date class+="form-control" type="date" %}
+            {{form.checkin_date.errors}}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-warning">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  const getCookie = name => {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+              var cookie = cookies[i].trim();
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+    }
+
+  const deleteFlight = id => {
+      let endpoint = `/flight/delete/${id}/`
+
+      fetch(endpoint, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          "X-CSRFToken": getCookie('csrftoken'),
+        },
+      })
+      .then(data => {
+        document.getElementById(`flight-${id}`).remove()
+        })
+      .catch(error => {
+        console.error("Error on flight item delete: ", error["error"]);
+      })
+    }
+
+    const updateFlight = (id, from_loc, to_loc, checkin_date) => {
+      var activeFromOpt = document.evaluate(`//option[contains(., '${from_loc}')]`, document, null, XPathResult.ANY_TYPE, null ).iterateNext();
+      var activeToOpt = document.evaluate(`//option[contains(., '${to_loc}')]`, document, null, XPathResult.ANY_TYPE, null ).iterateNext();
+      document.getElementById("flight_hidden_input").value = id
+      document.getElementById("id_from_loc").value = activeFromOpt.value
+      document.getElementById("id_to_loc").value = activeToOpt.value
+      document.getElementById("id_checkin_date").value = checkin_date
+
+      var modal = new bootstrap.Modal(document.getElementById('addUpdateItemModal'))
+      modal.toggle()
+    }
+
+    const toggleAddModal = () => {
+      document.getElementById("flight_hidden_input").value = null
+      document.getElementById("id_from_loc").value = null
+      document.getElementById("id_to_loc").value = null
+      document.getElementById("id_checkin_date").value = null
+
+      var modal = new bootstrap.Modal(document.getElementById('addUpdateItemModal'))
+      modal.toggle()
+    }
+</script>
+
+{% endblock content %}</div>

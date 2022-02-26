@@ -13,12 +13,22 @@ urlpatterns = [
     path("trips/<int:id>/add-tripmates/", views.trip_mate_add, name="trip_mate_add"),
     path("trips/<int:id>/add-destination/", views.trip_destination_add, name="trip_destination_add"),
     path("trips/<int:id>/budget/", views.budget_detail, name="budget_detail"),
+    path("trips/<int:id>/flights/", views.flight_list, name="flight_list"),
+    path("flight/delete/<int:id>/", views.flight_delete, name="flight_delete"),
+    path("flight/add/<int:id>/", views.flight_add_or_update, name="flight_add_or_update"),
     path("budget/delete/<int:id>/", views.budget_item_delete, name="budget_item_delete"),
     path("budget/add/<int:id>/", views.budget_item_add_or_update, name="budget_item_add_or_update"),
     path("destinations/all/", views.destination_all, name="destination_all"),
     path("destinations/create/", views.destination_create, name="destination_create"),
     path("destinations/<int:id>/update/", views.destination_update, name="destination_update"),
-    path("destinations/<int:des_id>/hotels/<int:hotel_id>/delete/", views.destination_hotel_delete, name="destination_hotel_delete"),
-    path("destinations/<int:id>/hotels/add/", views.destination_hotel_add_or_update, name="destination_hotel_add_or_update"),
-
+    path(
+        "destinations/<int:des_id>/hotels/<int:hotel_id>/delete/",
+        views.destination_hotel_delete,
+        name="destination_hotel_delete",
+    ),
+    path(
+        "destinations/<int:id>/hotels/add/",
+        views.destination_hotel_add_or_update,
+        name="destination_hotel_add_or_update",
+    ),
 ]
