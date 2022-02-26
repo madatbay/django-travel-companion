@@ -100,3 +100,22 @@ class Hotel(models.Model):
 
     def __repr__(self) -> str:
         return f"<Hotel - {self.name}>"
+
+
+class Flight(models.Model):
+    user = models.ForeignKey("user.User", related_name="user", on_delete=models.CASCADE)
+    trip = models.ForeignKey("travel.Trip", related_name="trip", on_delete=models.CASCADE)
+    from_loc = models.ForeignKey("travel.Destination", related_name="from_loc", on_delete=models.CASCADE, help_text="Point the location where you will fly")
+    to_loc = models.ForeignKey("travel.Destination", related_name="to_loc", on_delete=models.CASCADE, help_text="Point the destination where to fly")
+    checkin_date = models.DateField(help_text="Date when is required to check in")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def flight_name(self):
+        return f"Flight {self.from_loc}-{self.to_loc}"
+
+    def __str__(self) -> str:
+        return f"Flight {self.from_loc}-{self.to_loc}"
+
+    def __repr__(self) -> str:
+        return f"<Flight {self.from_loc}-{self.to_loc}>"
