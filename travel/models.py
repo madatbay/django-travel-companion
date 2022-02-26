@@ -1,6 +1,7 @@
 from datetime import date
-from django.utils import timezone
+
 from django.db import models
+from django.utils import timezone
 from django.utils.html import mark_safe
 
 

@@ -4,7 +4,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import datetime
 from user.models import User
 
-from .forms import BudgetItemForm, DestinationForm, FlightForm, HotelForm, TripDestinationForm, TripForm
+from .forms import (BudgetItemForm, DestinationForm, FlightForm, HotelForm,
+                    TripDestinationForm, TripForm)
 from .models import Budget, BudgetItem, Destination, Flight, Hotel, Trip
 
 
