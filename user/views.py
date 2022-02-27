@@ -43,7 +43,7 @@ def login_user(request):
                 logger.warning(f"User cannot log in with user {username}")
                 messages.error(request, "Invalid username or password.", extra_tags="alert-danger")
         else:
-            logger.warning(f"User cannot log in with user {username}")
+            logger.warning(f"User cannot complete log in request")
             messages.error(request, "Invalid username or password.", extra_tags="alert-danger")
     else:
         form = AuthenticationForm()
