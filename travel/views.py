@@ -139,10 +139,10 @@ def destination_create(request):
     if request.method == "POST":
         form = DestinationForm(request.POST, request.FILES)
         if form.is_valid():
-            trip = form.save(commit=False)
-            trip.user = request.user
-            trip.save()
-            logger.info(f"Destination instance <{trip}> created by {request.user}")
+            destination = form.save(commit=False)
+            destination.user = request.user
+            destination.save()
+            logger.info(f"Destination instance <{destination}> created by {request.user}")
             return redirect("travel:index")
     else:
         form = DestinationForm()
