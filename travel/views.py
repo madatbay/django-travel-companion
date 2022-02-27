@@ -3,7 +3,7 @@ import logging
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.utils.timezone import datetime
+from django.utils import timezone
 from user.models import User
 
 from .forms import (BudgetItemForm, DestinationForm, FlightForm, HotelForm,
@@ -22,7 +22,7 @@ def index(request):
             {
                 "trips": Trip.objects.filter(user=request.user),
                 "destinations": Destination.objects.filter(user=request.user),
-                "flights": Flight.objects.filter(user=request.user, checkin_date__gt=datetime.today()),
+                "flights": Flight.objects.filter(user=request.user, checkin_date__gt=timezone.now()),
             },
         )
     return render(request, "travel/home.html")
