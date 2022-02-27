@@ -174,7 +174,7 @@ def trip_destination_add(request, id):
         form = TripDestinationForm(request.user, request.POST, instance=trip)
         if form.is_valid():
             form.save()
-            logger.info(f"Destination instance <{request.POST}> added to trip <{trip.name}>")
+            logger.info("Destination instance <{}> saved to trip <{}>".format(request.POST.get("destinations"), trip.name))
             return redirect("travel:trip_detail", id=id)
     else:
         form = TripDestinationForm(request.user, instance=trip)
