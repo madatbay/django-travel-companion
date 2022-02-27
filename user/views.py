@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -6,7 +8,9 @@ from django.shortcuts import redirect, render
 
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 
-### 
+logger = logging.getLogger(__name__)
+
+###
 # Handles all authentication features
 ###
 
@@ -17,6 +21,7 @@ def register_user(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
+            logger.info(f"User <{user}> is created and logged in")
             return redirect("travel:index")
     else:
         form = CustomUserCreationForm()
@@ -32,10 +37,13 @@ def login_user(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
+                logger.info(f"User <{user}> is created and logged in")
                 return redirect("travel:index")
             else:
+                logger.warning(f"User cannot log in with user {username}")
                 messages.error(request, "Invalid username or password.", extra_tags="alert-danger")
         else:
+            logger.warning(f"User cannot log in with user {username}")
             messages.error(request, "Invalid username or password.", extra_tags="alert-danger")
     else:
         form = AuthenticationForm()
@@ -44,6 +52,7 @@ def login_user(request):
 
 @login_required
 def logout_user(request):
+    logger.info(f"User <{request.user}> logged out")
     logout(request)
     messages.info(request, "You have successfully logged out.")
     return redirect("travel:index")
@@ -60,6 +69,7 @@ def edit_profile(request):
         form = CustomUserChangeForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
+            logger.info(f"User <{request.user}> updated his profile")
             messages.info(request, "Profile successfully updated.", extra_tags="alert-success")
             return redirect("user:profile")
     else:

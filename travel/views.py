@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -8,9 +10,12 @@ from .forms import (BudgetItemForm, DestinationForm, FlightForm, HotelForm,
                     TripDestinationForm, TripForm)
 from .models import Budget, BudgetItem, Destination, Flight, Hotel, Trip
 
+logger = logging.getLogger(__name__)
+
 
 def index(request):
     if request.user.is_authenticated:
+        logger.info(f"Authenticated user visit {request.user}")
         return render(
             request,
             "travel/dashboard.html",
@@ -37,6 +42,7 @@ def trip_create(request):
             trip = form.save(commit=False)
             trip.user = request.user
             trip.save()
+            logger.info(f"New trip instance <{trip.name}> created by {request.user}")
             return redirect("travel:trip_mate_add", id=trip.id)
     else:
         form = TripForm()
@@ -45,7 +51,6 @@ def trip_create(request):
 
 @login_required
 def trip_detail(request, id):
-
     return render(request, "travel/trip_detail.html", {"trip": get_object_or_404(Trip, id=id)})
 
 
@@ -56,6 +61,7 @@ def trip_update(request, id: int):
         form = TripForm(request.POST, instance=trip)
         if form.is_valid():
             form.save()
+            logging.info(f"Trip <{trip.name}> updated by {request.user}")
             return redirect("travel:trip_detail", id=id)
     else:
         form = TripForm(instance=trip)
@@ -78,8 +84,10 @@ def budget_item_delete(request, id: int):
     """
     budget_item = BudgetItem.objects.filter(id=id).first()
     if budget_item:
+        logger.info(f"Hodel instance <{budget_item.label}> deleted")
         budget_item.delete()
         return JsonResponse({"status": "true", "message": f"Budget item {id} successfully deleted"}, status=204)
+    logger.warning(f"Budget item <{budget_item.label}x{budget_item.id}> cannot be deleted")
     return JsonResponse({"status": "false", "message": f"Cannot delete budget item {id}"}, status=400)
 
 
@@ -98,6 +106,7 @@ def budget_item_add_or_update(request, id: int):
             item = form.save(commit=False)
             item.budget = budget
             item.save()
+            logger.info(f"Budget item <{item.label}x{item.id}> saved")
     return redirect("travel:budget_detail", id=budget.trip.id)
 
 
@@ -113,6 +122,7 @@ def trip_mate_add(request, id: int):
         for user in users:
             if len(user):
                 trip.trip_mates.add(User.objects.filter(email=user).first().id)
+                logger.info(f"Trip mate <{user}> added to the trip <{trip.name}>")
         return redirect("travel:trip_detail", id=id)
     context = {"users": User.objects.exclude(email=request.user.email), "mates": trip.trip_mates.all(), "trip": trip}
     return render(request, "travel/add_tripmates.html", context)
@@ -132,6 +142,7 @@ def destination_create(request):
             trip = form.save(commit=False)
             trip.user = request.user
             trip.save()
+            logger.info(f"Destination instance <{trip}> created by {request.user}")
             return redirect("travel:index")
     else:
         form = DestinationForm()
@@ -145,6 +156,7 @@ def destination_update(request, id: int):
         form = DestinationForm(request.POST, request.FILES, instance=instance)
         if form.is_valid():
             form.save()
+            logger.info(f"Destination instance <{instance.name}> updated")
             return redirect("travel:index")
     else:
         form = DestinationForm(instance=instance)
@@ -162,6 +174,7 @@ def trip_destination_add(request, id):
         form = TripDestinationForm(request.user, request.POST, instance=trip)
         if form.is_valid():
             form.save()
+            logger.info(f"Destination instance <{request.POST}> added to trip <{trip.name}>")
             return redirect("travel:trip_detail", id=id)
     else:
         form = TripDestinationForm(request.user, instance=trip)
@@ -172,6 +185,7 @@ def trip_destination_add(request, id):
 def destination_hotel_delete(request, des_id: int, hotel_id: int):
     if request.method == "POST":
         hotel = get_object_or_404(Hotel, id=hotel_id)
+        logger.info(f"Hodel instance <{hotel.name}> deleted")
         hotel.delete()
     return redirect("travel:destination_update", id=des_id)
 
@@ -191,6 +205,7 @@ def destination_hotel_add_or_update(request, id: int):
             item = form.save(commit=False)
             item.city = destination
             item.save()
+            logger.info(f"Hodel instance <{item.name}> added to trip {destination.name}")
     return redirect("travel:destination_update", id=id)
 
 
@@ -220,6 +235,7 @@ def flight_add_or_update(request, id: int):
                 item.user = request.user
                 item.trip = trip
             item.save()
+            logger.info(f"Flight instance <{item.flight_name}> saved")
     return redirect("travel:flight_list", id=trip.id)
 
 
@@ -230,6 +246,8 @@ def flight_delete(request, id: int):
     """
     flight = Flight.objects.filter(id=id).first()
     if flight:
+        logger.info(f"Flight instance <{flight.flight_name}> deleted")
         flight.delete()
         return JsonResponse({"status": "true", "message": f"Flight {id} successfully deleted"}, status=204)
+    logger.warning(f"Flight instance <{flight.flight_name}> cannot be deleted")
     return JsonResponse({"status": "false", "message": f"Cannot delete flight {id}"}, status=400)
