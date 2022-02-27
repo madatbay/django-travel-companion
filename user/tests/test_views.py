@@ -1,5 +1,3 @@
-from curses import reset_prog_mode
-from urllib import response
 from django.test import Client, TestCase
 from django.urls import reverse
 from user.models import User
