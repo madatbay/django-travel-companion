@@ -24,7 +24,8 @@ services:
       sh -c "python manage.py makemigrations &&
              python manage.py migrate &&
              coverage run manage.py test &&
-             python manage.py runserver 0.0.0.0:8000"
+             python manage.py createadmin &&
+             python manage.py runserver --insecure 0.0.0.0:8000"
     environment:
       - SECRET_KET=8n)1l-4#54lb6cxik-@qmztwy^#8^167ou%_7-odw-y2e4#o%%
       - DEBUG=False

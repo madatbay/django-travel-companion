@@ -21,7 +21,7 @@ class Command(BaseCommand):
             admin.save()
             print(
                 f"_________________________________________________ \n"
-                f"Initial ADMIN ACCOUNT email={email}, password={password}. \n"
+                f"Initial ADMIN ACCOUNT email={email}, password={password} \n"
                 f"DO CHANGE THE PASSWORD AFTER FIRST LOGIN \n"
                 f"_________________________________________________ \n"
             )
