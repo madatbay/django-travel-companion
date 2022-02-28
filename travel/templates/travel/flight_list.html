@@ -54,7 +54,7 @@
         <h5 class="modal-title" id="addUpdateItemModalLabel">Add Flight</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="{% url 'travel:flight_add_or_update' flights.0.trip.id %}" method="post">
+      <form action="{% url 'travel:flight_add_or_update' trip_id %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="flight_id" id="flight_hidden_input">
         <div class="modal-body">

@@ -213,7 +213,7 @@ def flight_list(request, id: int):
     return render(
         request,
         "travel/flight_list.html",
-        {"flights": Flight.objects.filter(user=request.user, trip__id=id), "form": FlightForm()},
+        {"flights": Flight.objects.filter(user=request.user, trip__id=id), "form": FlightForm(), "trip_id": id},
     )
 
 
