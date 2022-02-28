@@ -49,7 +49,7 @@ class TestTripViews(TestCase):
             },
         )
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse("travel:trip_mate_add", kwargs={"id": 8}))
+        self.assertRedirects(response, reverse("travel:trip_mate_add", kwargs={"id": Trip.objects.last().id}))
 
     def test_trip_detail(self):
         self.client.login(username="test@test.com", password="123")

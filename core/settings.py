@@ -24,7 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KET") or "django-insecure-zw1*wcvsg@(sa7uwi=h%a630opfn^^^oc(n@i6fqzq-=bt8wfn"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG") or True
+_DEBUG = os.environ.get("DEBUG")
+if _DEBUG and _DEBUG == "False":
+    DEBUG = False
+else:
+    DEBUG = True
+
 
 ALLOWED_HOSTS = ["*"]
 
@@ -77,15 +82,15 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# Need to keep for testing/Github Actions
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
 
 if not DEBUG:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
-else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
