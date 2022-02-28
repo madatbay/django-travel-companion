@@ -17,7 +17,7 @@ Application was built on `Docker` images under the hood of `Docker-compose`. So,
 docker-compose up|stop|restart
 ```
 
-Note static files are served with "--insecure" flag, yet it's not intended for absolute production use. Since our application is not deploye totally we have to serve them locally instead of NGINX server
+> Note static files are served with "--insecure" flag, yet it's not intended for absolute production use. Since our application is not deploye totally we have to serve them locally instead of NGINX server
 
 Application has only 2 services:
 - Web application
