@@ -160,8 +160,7 @@ def destination_update(request, id: int):
             return redirect("travel:index")
     else:
         form = DestinationForm(instance=instance)
-        hform = HotelForm()
-    return render(request, "travel/destination_update.html", {"form": form, "destination": instance, "hform": hform})
+    return render(request, "travel/destination_update.html", {"form": form, "destination": instance, "hform": HotelForm()})
 
 
 @login_required
