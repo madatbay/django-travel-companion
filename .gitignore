@@ -6,6 +6,7 @@
 .vscode/
 media/
 .DS_Store
+data/
 
 ### Django ###
 *.log
