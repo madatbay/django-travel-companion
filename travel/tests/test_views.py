@@ -49,7 +49,7 @@ class TestTripViews(TestCase):
             },
         )
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse("travel:trip_mate_add", kwargs={"id": 2}))
+        self.assertRedirects(response, reverse("travel:trip_mate_add", kwargs={"id": 8}))
 
     def test_trip_detail(self):
         self.client.login(username="test@test.com", password="123")
@@ -229,7 +229,7 @@ class TestDestinationViews(TestCase):
     def test_trip_destination_add_post(self):
         self.client.login(username="test@test.com", password="123")
         response = self.client.post(
-            reverse("travel:trip_destination_add", kwargs={"id": self.trip.id}), {"destinations": [1]}
+            reverse("travel:trip_destination_add", kwargs={"id": self.trip.id}), {"destinations": [self.destination.id]}
         )
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse("travel:trip_detail", kwargs={"id": self.trip.id}))
