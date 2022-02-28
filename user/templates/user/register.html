@@ -8,7 +8,7 @@
       <form action="{% url 'user:register' %}" method="post" class="w-100">
         {% csrf_token %}
         <div class="form-group mb-2">
-          {{form.full_name.label}} {% render_field form.full_name class+="form-control" %}
+          {{form.full_name.label}} {% render_field form.full_name|attr:"autofocus" class+="form-control" %}
           <small class="text-danger">{{form.full_name.errors}}</small>
         </div>
         <div class="form-group mb-2">
