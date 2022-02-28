@@ -248,5 +248,5 @@ def flight_delete(request, id: int):
         logger.info(f"Flight instance <{flight.flight_name}> deleted")
         flight.delete()
         return JsonResponse({"status": "true", "message": f"Flight {id} successfully deleted"}, status=204)
-    logger.warning(f"Flight instance <{flight.flight_name}> cannot be deleted")
-    return JsonResponse({"status": "false", "message": f"Cannot delete flight {id}"}, status=400)
+    logger.warning(f"Flight instance <{id}> not found")
+    return JsonResponse({"status": "false", "message": f"Flight <{id}> not found"}, status=400)
