@@ -87,8 +87,8 @@ def budget_item_delete(request, id: int):
         logger.info(f"Hodel instance <{budget_item.label}> deleted")
         budget_item.delete()
         return JsonResponse({"status": "true", "message": f"Budget item {id} successfully deleted"}, status=204)
-    logger.warning(f"Budget item <{budget_item.label}x{budget_item.id}> cannot be deleted")
-    return JsonResponse({"status": "false", "message": f"Cannot delete budget item {id}"}, status=400)
+    logger.warning(f"Budget item <{id}> not found")
+    return JsonResponse({"status": "false", "message": f"Budget item <{id}> not found"}, status=400)
 
 
 @login_required
