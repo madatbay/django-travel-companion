@@ -1,6 +1,8 @@
 # Django Travel Companion
 Travelling Companion App - a system that will help you and your family to manage their travel itineraries. An A-Z solution that helps keep track of your budget, schedule, the cities that you will visit, flights between the cities and hotel bookings that you will make (can be multiple per city).
 
+[![Django Test](https://github.com/madatbay/django-travel-companion/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/madatbay/django-travel-companion/actions/workflows/test.yml)
+
 ## Testing
 Both models and view tested with built-in testing module. Test reports can be seen with coverage:
 ```
